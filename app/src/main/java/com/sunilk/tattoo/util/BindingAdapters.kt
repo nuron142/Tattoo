@@ -9,7 +9,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.bumptech.glide.request.RequestOptions
 
 /**
- * Created by Sunil on 10/6/18.
+ * Created by Sunil on 20/10/18.
  */
 
 @BindingAdapter("android:onClick")

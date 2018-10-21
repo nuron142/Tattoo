@@ -10,7 +10,7 @@ import java.util.concurrent.Callable
 import java.util.concurrent.TimeUnit
 
 /**
- * Created by Sunil on 26/09/17.
+ * Created by Sunil on 20/10/18.
  */
 
 object RxUtils {

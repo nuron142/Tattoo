@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
- * Created by Sunil on 10/5/18.
+ * Created by Sunil on 20/10/18.
  */
 class TattooSearchActivityViewModel {
 

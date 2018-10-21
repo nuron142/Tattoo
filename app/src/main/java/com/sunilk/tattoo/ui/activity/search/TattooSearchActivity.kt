@@ -9,14 +9,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.sunilk.tattoo.R
 import com.sunilk.tattoo.databinding.ActivityTattooSearchBinding
-import com.sunilk.tattoo.ui.SpectreApplication
+import com.sunilk.tattoo.ui.TattooApplication
 import com.sunilk.tattoo.ui.adapter.BindingRecyclerAdapter
 import com.sunilk.tattoo.util.Utilities
 import com.sunilk.tattoo.util.itemanimators.AlphaCrossFadeAnimator
 
 
 /**
- * Created by Sunil on 10/4/18.
+ * Created by Sunil on 20/10/18.
  */
 class TattooSearchActivity : AppCompatActivity() {
 
@@ -41,7 +41,7 @@ class TattooSearchActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tattoo_search)
 
         tattooSearchActivityViewModel = TattooSearchActivityViewModel(TattooSearchTattooActivityNavigator(this, binding))
-        (application as SpectreApplication).appComponent.inject(tattooSearchActivityViewModel)
+        (application as TattooApplication).appComponent.inject(tattooSearchActivityViewModel)
         tattooSearchActivityViewModel.init()
 
         binding.vm = tattooSearchActivityViewModel

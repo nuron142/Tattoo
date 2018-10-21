@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
- * Created by Sunil on 10/5/18.
+ * Created by Sunil on 21/10/18.
  */
 
 class TattooDetailActivityViewModel {

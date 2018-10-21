@@ -5,7 +5,7 @@ import com.sunilk.tattoo.network.api.search.TattooSearchResponse
 import io.reactivex.Flowable
 
 /**
- * Created by Sunil on 10/7/18.
+ * Created by Sunil on 20/10/18.
  */
 
 interface INetworkService {

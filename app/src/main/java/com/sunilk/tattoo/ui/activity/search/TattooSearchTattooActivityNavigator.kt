@@ -7,7 +7,7 @@ import android.support.design.widget.Snackbar
 import com.sunilk.tattoo.databinding.ActivityTattooSearchBinding
 
 /**
- * Created by Sunil on 10/6/18.
+ * Created by Sunil on 20/10/18.
  */
 class TattooSearchTattooActivityNavigator : ITattooSearchActivityNavigator {
 

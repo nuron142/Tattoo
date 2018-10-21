@@ -1,7 +1,7 @@
 package com.sunilk.tattoo.ui.activity.artistdetail
 
 /**
- * Created by Sunil on 10/6/18.
+ * Created by Sunil on 21/10/18.
  */
 
 interface ITattooDetailActivityService {

@@ -1,7 +1,7 @@
 package com.sunilk.tattoo.ui.activity.search
 
 /**
- * Created by Sunil on 10/6/18.
+ * Created by Sunil on 20/10/18.
  */
 interface ITattooSearchActivityNavigator {
 

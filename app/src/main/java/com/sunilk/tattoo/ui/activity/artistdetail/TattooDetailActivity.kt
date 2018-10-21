@@ -7,10 +7,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.sunilk.tattoo.R
 import com.sunilk.tattoo.databinding.ActivityTattooDetailBinding
-import com.sunilk.tattoo.ui.SpectreApplication
+import com.sunilk.tattoo.ui.TattooApplication
 
 /**
- * Created by Sunil on 10/4/18.
+ * Created by Sunil on 21/10/18.
  */
 
 class TattooDetailActivity : AppCompatActivity() {
@@ -36,14 +36,14 @@ class TattooDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (application as SpectreApplication).appComponent.inject(this)
+        (application as TattooApplication).appComponent.inject(this)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tattoo_detail)
 
         val tattooId = intent.getStringExtra(TATTOO_ID)
 
         tattooDetailActivityViewModel = TattooDetailActivityViewModel(tattooId, TattooDetailActivityService(this, binding))
-        (application as SpectreApplication).appComponent.inject(tattooDetailActivityViewModel)
+        (application as TattooApplication).appComponent.inject(tattooDetailActivityViewModel)
         tattooDetailActivityViewModel.init()
 
         binding.vm = tattooDetailActivityViewModel

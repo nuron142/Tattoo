@@ -14,7 +14,7 @@ import com.android.databinding.library.baseAdapters.BR
  */
 
 /**
- * Created by Sunil on 10/5/18.
+ * Created by Sunil on 20/10/18.
  */
 class BindingRecyclerAdapter : RecyclerView.Adapter<BindingHolder> {
 

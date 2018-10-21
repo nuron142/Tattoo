@@ -7,9 +7,9 @@ import com.sunilk.tattoo.di.DaggerAppComponent
 import io.reactivex.plugins.RxJavaPlugins
 
 /**
- * Created by Sunil on 10/1/18.
+ * Created by Sunil on 20/10/18.
  */
-class SpectreApplication : Application() {
+class TattooApplication : Application() {
 
     lateinit var appComponent: AppComponent
 

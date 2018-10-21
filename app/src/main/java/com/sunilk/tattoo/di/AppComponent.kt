@@ -1,6 +1,6 @@
 package com.sunilk.tattoo.di
 
-import com.sunilk.tattoo.ui.SpectreApplication
+import com.sunilk.tattoo.ui.TattooApplication
 import com.sunilk.tattoo.ui.activity.artistdetail.TattooDetailActivity
 import com.sunilk.tattoo.ui.activity.artistdetail.TattooDetailActivityViewModel
 import com.sunilk.tattoo.ui.activity.search.TattooSearchActivity
@@ -9,14 +9,14 @@ import dagger.Component
 import javax.inject.Singleton
 
 /**
- * Created by Sunil on 10/1/18.
+ * Created by Sunil on 20/10/18.
  */
 
 @Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
 
-    fun inject(spectreApplication: SpectreApplication)
+    fun inject(tattooApplication: TattooApplication)
 
     fun inject(tattooSearchActivity: TattooSearchActivity)
 

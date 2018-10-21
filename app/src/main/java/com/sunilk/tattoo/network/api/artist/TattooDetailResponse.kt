@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.sunilk.tattoo.network.api.search.TattooDetail
 
 /**
- * Created by Sunil on 10/5/18.
+ * Created by Sunil on 21/10/18.
  */
 class TattooDetailResponse {
 

@@ -4,7 +4,7 @@ import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 
 /**
- * Created by Sunil on 10/5/18.
+ * Created by Sunil on 20/10/18.
  */
 class BindingHolder : RecyclerView.ViewHolder {
 

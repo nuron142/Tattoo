@@ -6,7 +6,7 @@ import android.support.design.widget.Snackbar
 import com.sunilk.tattoo.databinding.ActivityTattooDetailBinding
 
 /**
- * Created by Sunil on 10/6/18.
+ * Created by Sunil on 21/10/18.
  */
 
 class TattooDetailActivityService : ITattooDetailActivityService {
