@@ -13,25 +13,25 @@ import com.sunilk.tattoo.ui.SpectreApplication
  * Created by Sunil on 10/4/18.
  */
 
-class ArtistDetailActivity : AppCompatActivity() {
+class TattooDetailActivity : AppCompatActivity() {
 
     companion object {
 
-        val TAG = ArtistDetailActivity::class.java.simpleName
+        val TAG = TattooDetailActivity::class.java.simpleName
 
-        val ARTIST_ID = "artistId"
+        val TATTOO_ID = "artistId"
 
-        fun launch(context: Context, artistId: String) {
+        fun launch(context: Context, tattooId: String) {
 
-            val intent = Intent(context, ArtistDetailActivity::class.java)
-            intent.putExtra(ARTIST_ID, artistId)
+            val intent = Intent(context, TattooDetailActivity::class.java)
+            intent.putExtra(TATTOO_ID, tattooId)
             context.startActivity(intent)
         }
     }
 
     private lateinit var binding: ActivityTattooDetailBinding
 
-    private lateinit var artistDetailActivityViewModel: ArtistDetailActivityViewModel
+    private lateinit var tattooDetailActivityViewModel: TattooDetailActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,18 +40,18 @@ class ArtistDetailActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tattoo_detail)
 
-        val artistID = intent.getStringExtra(ARTIST_ID)
+        val tattooId = intent.getStringExtra(TATTOO_ID)
 
-        artistDetailActivityViewModel = ArtistDetailActivityViewModel(artistID, ArtistDetailActivityService(this, binding))
-        (application as SpectreApplication).appComponent.inject(artistDetailActivityViewModel)
-        artistDetailActivityViewModel.init()
+        tattooDetailActivityViewModel = TattooDetailActivityViewModel(tattooId, TattooDetailActivityService(this, binding))
+        (application as SpectreApplication).appComponent.inject(tattooDetailActivityViewModel)
+        tattooDetailActivityViewModel.init()
 
-        binding.vm = artistDetailActivityViewModel
+        binding.vm = tattooDetailActivityViewModel
         binding.executePendingBindings()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        artistDetailActivityViewModel.onDestroy()
+        tattooDetailActivityViewModel.onDestroy()
     }
 }

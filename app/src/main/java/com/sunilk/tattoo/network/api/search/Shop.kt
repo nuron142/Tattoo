@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Sunil on 10/5/18.
  */
-class Artist {
+class Shop {
 
     @SerializedName("id")
     val id: String? = null
@@ -18,7 +18,4 @@ class Artist {
 
     @SerializedName("image_url")
     val image_url: String? = null
-
-    @SerializedName("counts")
-    val counts: Counts? = null
 }

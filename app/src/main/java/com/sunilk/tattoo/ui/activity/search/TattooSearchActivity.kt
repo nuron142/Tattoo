@@ -1,11 +1,5 @@
 package com.sunilk.tattoo.ui.activity.search
 
-import com.sunilk.tattoo.R
-import com.sunilk.tattoo.databinding.ActivitySearchBinding
-import com.sunilk.tattoo.ui.SpectreApplication
-import com.sunilk.tattoo.ui.adapter.BindingRecyclerAdapter
-import com.sunilk.tattoo.util.Utilities
-import com.sunilk.tattoo.util.itemanimators.AlphaCrossFadeAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -13,38 +7,44 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import com.sunilk.tattoo.R
+import com.sunilk.tattoo.databinding.ActivityTattooSearchBinding
+import com.sunilk.tattoo.ui.SpectreApplication
+import com.sunilk.tattoo.ui.adapter.BindingRecyclerAdapter
+import com.sunilk.tattoo.util.Utilities
+import com.sunilk.tattoo.util.itemanimators.AlphaCrossFadeAnimator
 
 
 /**
  * Created by Sunil on 10/4/18.
  */
-class SearchActivity : AppCompatActivity() {
+class TattooSearchActivity : AppCompatActivity() {
 
     companion object {
 
-        val TAG: String = SearchActivity::class.java.simpleName
+        val TAG: String = TattooSearchActivity::class.java.simpleName
 
         fun launch(activity: Activity) {
 
-            val intent = Intent(activity, SearchActivity::class.java)
+            val intent = Intent(activity, TattooSearchActivity::class.java)
             activity.startActivity(intent)
         }
     }
 
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: ActivityTattooSearchBinding
 
-    private lateinit var searchActivityViewModel: SearchActivityViewModel
+    private lateinit var tattooSearchActivityViewModel: TattooSearchActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_tattoo_search)
 
-        searchActivityViewModel = SearchActivityViewModel(SearchActivityService(this, binding))
-        (application as SpectreApplication).appComponent.inject(searchActivityViewModel)
-        searchActivityViewModel.init()
+        tattooSearchActivityViewModel = TattooSearchActivityViewModel(TattooSearchTattooActivityNavigator(this, binding))
+        (application as SpectreApplication).appComponent.inject(tattooSearchActivityViewModel)
+        tattooSearchActivityViewModel.init()
 
-        binding.vm = searchActivityViewModel
+        binding.vm = tattooSearchActivityViewModel
         binding.executePendingBindings()
 
         setupRecyclerView()
@@ -63,7 +63,7 @@ class SearchActivity : AppCompatActivity() {
         itemAnimator.moveDuration = 200
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = BindingRecyclerAdapter(searchActivityViewModel.dataSet, searchActivityViewModel.viewModelLayoutIdMap)
+        val adapter = BindingRecyclerAdapter(tattooSearchActivityViewModel.dataSet, tattooSearchActivityViewModel.viewModelLayoutIdMap)
 
         binding.recyclerView.itemAnimator = itemAnimator
         binding.recyclerView.adapter = adapter
@@ -77,6 +77,6 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        searchActivityViewModel.onDestroy()
+        tattooSearchActivityViewModel.onDestroy()
     }
 }

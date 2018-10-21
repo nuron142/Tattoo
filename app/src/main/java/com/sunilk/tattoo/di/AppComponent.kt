@@ -1,10 +1,10 @@
 package com.sunilk.tattoo.di
 
 import com.sunilk.tattoo.ui.SpectreApplication
-import com.sunilk.tattoo.ui.activity.artistdetail.ArtistDetailActivity
-import com.sunilk.tattoo.ui.activity.artistdetail.ArtistDetailActivityViewModel
-import com.sunilk.tattoo.ui.activity.search.SearchActivity
-import com.sunilk.tattoo.ui.activity.search.SearchActivityViewModel
+import com.sunilk.tattoo.ui.activity.artistdetail.TattooDetailActivity
+import com.sunilk.tattoo.ui.activity.artistdetail.TattooDetailActivityViewModel
+import com.sunilk.tattoo.ui.activity.search.TattooSearchActivity
+import com.sunilk.tattoo.ui.activity.search.TattooSearchActivityViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -18,12 +18,12 @@ interface AppComponent {
 
     fun inject(spectreApplication: SpectreApplication)
 
-    fun inject(searchActivity: SearchActivity)
+    fun inject(tattooSearchActivity: TattooSearchActivity)
 
-    fun inject(artistDetailActivity: ArtistDetailActivity)
+    fun inject(tattooDetailActivity: TattooDetailActivity)
 
-    fun inject(searchActivityViewModel: SearchActivityViewModel)
+    fun inject(tattooSearchActivityViewModel: TattooSearchActivityViewModel)
 
-    fun inject(artistDetailActivityViewModel: ArtistDetailActivityViewModel)
+    fun inject(tattooDetailActivityViewModel: TattooDetailActivityViewModel)
 
 }

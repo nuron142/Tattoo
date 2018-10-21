@@ -1,8 +1,7 @@
 package com.sunilk.tattoo.network
 
-import com.sunilk.tattoo.network.api.artist.ArtistDetailResponse
-import com.sunilk.tattoo.network.api.search.SearchResponse
-import com.sunilk.tattoo.network.api.toptracks.ArtistTopAlbumsResponse
+import com.sunilk.tattoo.network.api.artist.TattooDetailResponse
+import com.sunilk.tattoo.network.api.search.TattooSearchResponse
 import io.reactivex.Flowable
 
 /**
@@ -11,16 +10,9 @@ import io.reactivex.Flowable
 
 interface INetworkService {
 
-    fun setAccessToken(accessToken: String?)
-
     fun setNetworkChanged()
 
-    fun getArtistDetailFlowable(artistID: String): Flowable<ArtistDetailResponse>
+    fun getTattooDetailFlowable(artistID: String): Flowable<TattooDetailResponse>
 
-    fun getSearchQueryFlowable(query: String): Flowable<SearchResponse>
-
-    fun getArtistTopAlbumsFlowable(artistID: String): Flowable<ArtistTopAlbumsResponse>
-
-    fun subscribeNetworkChangeSubject(): Flowable<Boolean>
-
+    fun getSearchQueryFlowable(query: String): Flowable<TattooSearchResponse>
 }

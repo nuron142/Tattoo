@@ -9,7 +9,7 @@ import com.sunilk.tattoo.databinding.ActivityTattooDetailBinding
  * Created by Sunil on 10/6/18.
  */
 
-class ArtistDetailActivityService : IArtistDetailActivityService {
+class TattooDetailActivityService : ITattooDetailActivityService {
 
     private val activity: Activity
     private val artistDetailBinding: ActivityTattooDetailBinding

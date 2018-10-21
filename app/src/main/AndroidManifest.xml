@@ -17,7 +17,7 @@
             tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-                android:name=".ui.activity.search.SearchActivity"
+                android:name=".ui.activity.search.TattooSearchActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/NoToolbarAppTheme">
             <intent-filter>
@@ -28,7 +28,7 @@
         </activity>
 
         <activity
-                android:name=".ui.activity.artistdetail.ArtistDetailActivity"
+                android:name=".ui.activity.artistdetail.TattooDetailActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/NoToolbarAppTheme"/>
 

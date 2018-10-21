@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.sunilk.tattoo.ui.activity.search.viewmodels.SearchAlbumViewModel"/>
+            type="com.sunilk.tattoo.ui.activity.search.viewmodels.SearchTattooViewModel"/>
 
     </data>
 
