@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Tattoo</string>
+
+    <string name="app_name">Sunil</string>
+
+    <string name="com_spotify_sdk_redirect_scheme">spectre</string>
+    <string name="com_spotify_sdk_redirect_host">spotifyCallback</string>
+
+    <string name="general_error">"Something went wrong. Please try again"</string>
+    <string name="login_error">"Login Failed. Please try again"</string>
+    <string name="no_results_found">""No results found"</string>
+
 </resources>

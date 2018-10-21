@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+
+    <color name="colorPrimary">#0bb279</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#0bb279</color>
+
+    <color name="black">#535766</color>
+    <color name="transparent">#00ffffff</color>
+
+    <color name="white80">#ccffffff</color>
+    <color name="white70">#b3ffffff</color>
+    <color name="white">#ffffff</color>
+
+    <color name="blackGrape100">#282c3f</color>
+    <color name="blackGrape90">#3e4152</color>
+    <color name="blackGrape80">#535766</color>
+    <color name="blackGrape70">#686b78</color>
+    <color name="blackGrape60">#7e808c</color>
+    <color name="blackGrape50">#93959f</color>
+    <color name="blackGrape40">#a9abb2</color>
+    <color name="blackGrape30">#bebfc5</color>
+    <color name="blackGrape20">#d4d5d9</color>
+    <color name="blackGrape10">#e9e9eb</color>
+    <color name="blackGrape0">#f4f4f5</color>
+
+    <color name="guavaGreen100">#60b245</color>
+
 </resources>
