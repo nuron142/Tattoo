@@ -3,6 +3,7 @@ package com.sunilk.tattoo.network
 import com.sunilk.tattoo.network.api.artist.TattooDetailResponse
 import com.sunilk.tattoo.network.api.search.TattooSearchResponse
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 /**
  * Created by Sunil on 20/10/18.
@@ -10,9 +11,7 @@ import io.reactivex.Flowable
 
 interface INetworkService {
 
-    fun setNetworkChanged()
+    fun getTattooDetailFlowable(tattooID: String): Single<TattooDetailResponse>
 
-    fun getTattooDetailFlowable(artistID: String): Flowable<TattooDetailResponse>
-
-    fun getSearchQueryFlowable(query: String): Flowable<TattooSearchResponse>
+    fun getSearchQueryFlowable(query: String): Single<TattooSearchResponse>
 }

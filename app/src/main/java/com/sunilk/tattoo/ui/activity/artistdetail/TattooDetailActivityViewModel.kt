@@ -22,14 +22,12 @@ class TattooDetailActivityViewModel {
     companion object {
 
         val TAG: String = TattooDetailActivityViewModel::class.java.simpleName
-
     }
-
-    @Inject
-    lateinit var networkService: INetworkService
 
     private var tattooId: String? = null
     private var tattooDetailActivityService: ITattooDetailActivityService
+    private val networkService: INetworkService
+
     private var disposable = CompositeDisposable()
     private var artistDetailDisposable: Disposable? = null
 
@@ -46,13 +44,12 @@ class TattooDetailActivityViewModel {
 
     private var shouldRetryApiCall = false
 
-    constructor(tattooId: String?, tattooDetailActivityService: ITattooDetailActivityService) {
+    constructor(tattooId: String?, tattooDetailActivityService: ITattooDetailActivityService,
+        networkService: INetworkService) {
 
         this.tattooId = tattooId
         this.tattooDetailActivityService = tattooDetailActivityService
-    }
-
-    fun init() {
+        this.networkService = networkService
 
         setUpViewModel()
     }
@@ -71,17 +68,17 @@ class TattooDetailActivityViewModel {
             showProgress.set(true)
 
             artistDetailDisposable = networkService.getTattooDetailFlowable(artistId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ artistDetailResponse ->
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ artistDetailResponse ->
 
-                        handleArtistDetailResponse(artistId, artistDetailResponse)
+                    handleArtistDetailResponse(artistId, artistDetailResponse)
 
-                    }, { e ->
+                }, { e ->
 
-                        Log.e(TAG, "Error : $e")
-                        handleArtistDetailFailed()
-                    })
+                    Log.e(TAG, "Error : $e")
+                    handleArtistDetailFailed()
+                })
 
             artistDetailDisposable?.let { disposable.add(it) }
 

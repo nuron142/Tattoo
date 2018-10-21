@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.sunilk.tattoo.R
 import com.sunilk.tattoo.databinding.ActivityTattooDetailBinding
+import com.sunilk.tattoo.network.INetworkService
 import com.sunilk.tattoo.ui.TattooApplication
+import javax.inject.Inject
 
 /**
  * Created by Sunil on 21/10/18.
@@ -29,6 +31,9 @@ class TattooDetailActivity : AppCompatActivity() {
         }
     }
 
+    @Inject
+    lateinit var networkService: INetworkService
+
     private lateinit var binding: ActivityTattooDetailBinding
 
     private lateinit var tattooDetailActivityViewModel: TattooDetailActivityViewModel
@@ -42,9 +47,8 @@ class TattooDetailActivity : AppCompatActivity() {
 
         val tattooId = intent.getStringExtra(TATTOO_ID)
 
-        tattooDetailActivityViewModel = TattooDetailActivityViewModel(tattooId, TattooDetailActivityService(this, binding))
-        (application as TattooApplication).appComponent.inject(tattooDetailActivityViewModel)
-        tattooDetailActivityViewModel.init()
+        tattooDetailActivityViewModel = TattooDetailActivityViewModel(tattooId,
+            TattooDetailActivityService(this, binding), networkService)
 
         binding.vm = tattooDetailActivityViewModel
         binding.executePendingBindings()

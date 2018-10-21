@@ -27,13 +27,12 @@ class TattooSearchActivityViewModel {
         val TAG: String = TattooSearchActivityViewModel::class.java.simpleName
     }
 
-    @Inject
-    lateinit var networkService: INetworkService
+    val networkService: INetworkService
 
     var dataSet = ObservableArrayList<ViewModel>()
 
     val viewModelLayoutIdMap: HashMap<Class<out ViewModel>, Int> = hashMapOf(
-            SearchTattooViewModel::class.java to R.layout.item_search_tattoo_layout
+        SearchTattooViewModel::class.java to R.layout.item_search_tattoo_layout
     )
 
     private var disposable = CompositeDisposable()
@@ -47,12 +46,10 @@ class TattooSearchActivityViewModel {
 
     private var shouldRetryApiCall = false
 
-    constructor(tattooSearchActivityNavigator: ITattooSearchActivityNavigator) {
+    constructor(tattooSearchActivityNavigator: ITattooSearchActivityNavigator, networkService: INetworkService) {
 
         this.tattooSearchActivityNavigator = tattooSearchActivityNavigator
-    }
-
-    fun init() {
+        this.networkService = networkService
 
         setUpViewModel()
     }
@@ -60,19 +57,19 @@ class TattooSearchActivityViewModel {
     private fun setUpViewModel() {
 
         disposable.add(searchQuery.toFlowable()
-                .map { query ->
+            .map { query ->
 
-                    showProgress.set(query.isNotEmpty())
-                    showCloseButton.set(query.isNotEmpty())
+                showProgress.set(query.isNotEmpty())
+                showCloseButton.set(query.isNotEmpty())
 
-                    return@map query
-                }
-                .debounce(600, TimeUnit.MILLISECONDS)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ query ->
-                    getSearchList(query)
-                }, { e -> Log.d(TAG, "" + e.message) })
+                return@map query
+            }
+            .debounce(600, TimeUnit.MILLISECONDS)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ query ->
+                getSearchList(query)
+            }, { e -> Log.d(TAG, "" + e.message) })
         )
     }
 
@@ -86,17 +83,17 @@ class TattooSearchActivityViewModel {
             showCloseButton.set(true)
 
             searchDisposable = networkService.getSearchQueryFlowable(query.toLowerCase())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ searchResponse ->
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ searchResponse ->
 
-                        handleSearchResponse(searchResponse)
+                    handleSearchResponse(searchResponse)
 
-                    }, { e ->
+                }, { e ->
 
-                        Log.e(TAG, "Error : $e")
-                        handleSearchFailed()
-                    })
+                    Log.e(TAG, "Error : $e")
+                    handleSearchFailed()
+                })
 
         } else {
 

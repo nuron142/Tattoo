@@ -9,10 +9,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.sunilk.tattoo.R
 import com.sunilk.tattoo.databinding.ActivityTattooSearchBinding
+import com.sunilk.tattoo.network.INetworkService
 import com.sunilk.tattoo.ui.TattooApplication
 import com.sunilk.tattoo.ui.adapter.BindingRecyclerAdapter
 import com.sunilk.tattoo.util.Utilities
 import com.sunilk.tattoo.util.itemanimators.AlphaCrossFadeAnimator
+import javax.inject.Inject
 
 
 /**
@@ -31,6 +33,9 @@ class TattooSearchActivity : AppCompatActivity() {
         }
     }
 
+    @Inject
+    lateinit var networkService: INetworkService
+
     private lateinit var binding: ActivityTattooSearchBinding
 
     private lateinit var tattooSearchActivityViewModel: TattooSearchActivityViewModel
@@ -39,10 +44,12 @@ class TattooSearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tattoo_search)
+        (application as TattooApplication).appComponent.inject(this)
 
-        tattooSearchActivityViewModel = TattooSearchActivityViewModel(TattooSearchTattooActivityNavigator(this, binding))
-        (application as TattooApplication).appComponent.inject(tattooSearchActivityViewModel)
-        tattooSearchActivityViewModel.init()
+        tattooSearchActivityViewModel = TattooSearchActivityViewModel(
+            TattooSearchTattooActivityNavigator(this, binding),
+            networkService
+        )
 
         binding.vm = tattooSearchActivityViewModel
         binding.executePendingBindings()
@@ -63,7 +70,10 @@ class TattooSearchActivity : AppCompatActivity() {
         itemAnimator.moveDuration = 200
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = BindingRecyclerAdapter(tattooSearchActivityViewModel.dataSet, tattooSearchActivityViewModel.viewModelLayoutIdMap)
+        val adapter = BindingRecyclerAdapter(
+            tattooSearchActivityViewModel.dataSet,
+            tattooSearchActivityViewModel.viewModelLayoutIdMap
+        )
 
         binding.recyclerView.itemAnimator = itemAnimator
         binding.recyclerView.adapter = adapter
