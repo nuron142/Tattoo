@@ -15,7 +15,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 /**
  * Created by Sunil on 20/10/18.
@@ -71,6 +70,13 @@ class TattooSearchActivityViewModel {
                 getSearchList(query)
             }, { e -> Log.d(TAG, "" + e.message) })
         )
+
+
+        searchQuery.set("Dotwork")
+    }
+
+    fun getRandomTattooList() {
+
     }
 
     private fun getSearchList(query: String?) {
@@ -91,7 +97,7 @@ class TattooSearchActivityViewModel {
 
                 }, { e ->
 
-                    Log.e(TAG, "Error : $e")
+                    Log.d(TAG, "Error : $e")
                     handleSearchFailed()
                 })
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,83 +16,19 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:foreground="@drawable/ripple_rectangle_black"
         android:onClick="@{vm.onClick()}">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/image"
+        <ImageView
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="0dp"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:image_url="@{vm.albumImageUrl}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="4dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:image_url="@{vm.albumImageUrl}"
-                tools:src="@color/blackGrape20"
-                app:placeholder="@{@color/blackGrape20}"/>
-
-        </android.support.v7.widget.CardView>
-
-        <TextView
-            android:id="@+id/albumName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:layout_marginStart="16dp"
-            android:maxLines="2"
-            android:text="@{vm.albumName, default=`Death Star`}"
-            android:textColor="@color/blackGrape70"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:visibility="visible"
-            app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/albumArtists"
-            app:layout_constraintTop_toTopOf="@+id/image"/>
-
-
-        <TextView
-            android:id="@+id/albumArtists"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:fontFamily="monospace"
-            android:text="@{vm.albumArtists, default=`Darth Vader`}"
-            android:textColor="@color/blackGrape60"
-            android:textSize="12sp"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/albumName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/albumReleaseDate"
-            app:layout_constraintTop_toBottomOf="@+id/albumName"/>
-
-
-        <TextView
-            android:id="@+id/albumReleaseDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@{vm.albumReleaseDate, default=`Darth Vader`}"
-            android:textColor="@color/blackGrape60"
-            android:textSize="12sp"
-            android:fontFamily="monospace"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/albumName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/image"
-            app:layout_constraintTop_toBottomOf="@+id/albumArtists"/>
+            app:placeholder="@{@color/blackGrape20}"
+            tools:src="@color/blackGrape20"/>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

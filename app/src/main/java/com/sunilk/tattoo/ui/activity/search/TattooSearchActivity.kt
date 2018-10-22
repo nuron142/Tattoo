@@ -6,12 +6,13 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.GridLayoutManager
 import com.sunilk.tattoo.R
 import com.sunilk.tattoo.databinding.ActivityTattooSearchBinding
 import com.sunilk.tattoo.network.INetworkService
 import com.sunilk.tattoo.ui.TattooApplication
 import com.sunilk.tattoo.ui.adapter.BindingRecyclerAdapter
+import com.sunilk.tattoo.ui.adapter.ItemOffsetDecoration
 import com.sunilk.tattoo.util.Utilities
 import com.sunilk.tattoo.util.itemanimators.AlphaCrossFadeAnimator
 import javax.inject.Inject
@@ -57,6 +58,8 @@ class TattooSearchActivity : AppCompatActivity() {
         setupRecyclerView()
 
         Utilities.showKeyBoard(this, binding.searchEditText)
+
+        tattooSearchActivityViewModel.getRandomTattooList()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -69,12 +72,23 @@ class TattooSearchActivity : AppCompatActivity() {
         itemAnimator.changeDuration = 200
         itemAnimator.moveDuration = 200
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        val gridLayoutManager = GridLayoutManager(this, 2)
+
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+
+                return if ((position + 1) % 5 == 0) 2 else 1
+            }
+        }
+
+        binding.recyclerView.layoutManager = gridLayoutManager
         val adapter = BindingRecyclerAdapter(
             tattooSearchActivityViewModel.dataSet,
             tattooSearchActivityViewModel.viewModelLayoutIdMap
         )
 
+        binding.recyclerView.addItemDecoration(ItemOffsetDecoration(resources
+            .getDimensionPixelSize(R.dimen.itemdecoratoroffset)))
         binding.recyclerView.itemAnimator = itemAnimator
         binding.recyclerView.adapter = adapter
 
