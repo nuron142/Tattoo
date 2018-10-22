@@ -49,9 +49,10 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(okHttpClient:OkHttpClient): Retrofit {
 
         return Retrofit.Builder().baseUrl(NetworkService.BASE_URL)
+            .client(okHttpClient)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

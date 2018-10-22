@@ -32,9 +32,25 @@ fun loadImage(imageView: ImageView, imageUrl: String?, placeholder: Drawable) {
     val glide = Glide.with(imageView.context)
 
     glide.load(imageUrl)
-            .apply(RequestOptions
-                    .centerCropTransform()
-                    .placeholder(placeholder))
-            .transition(withCrossFade())
-            .into(imageView)
+        .apply(
+            RequestOptions
+                .centerCropTransform()
+                .placeholder(placeholder)
+        )
+        .transition(withCrossFade())
+        .into(imageView)
+}
+
+@BindingAdapter("image_url", "circleCrop")
+fun loadCircleImage(imageView: ImageView, imageUrl: String?, circleCrop: Boolean) {
+
+    val glide = Glide.with(imageView.context)
+
+    glide.load(imageUrl)
+        .apply(
+            RequestOptions
+                .circleCropTransform()
+        )
+        .transition(withCrossFade())
+        .into(imageView)
 }

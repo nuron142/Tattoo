@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#0bb279</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#0bb279</color>
+    <color name="colorPrimary">@color/blue</color>
+    <color name="colorPrimaryDark">@color/blue</color>
+    <color name="colorAccent">@color/blueLight</color>
 
     <color name="black">#535766</color>
     <color name="transparent">#00ffffff</color>
@@ -25,5 +25,13 @@
     <color name="blackGrape0">#f4f4f5</color>
 
     <color name="guavaGreen100">#60b245</color>
+
+    <color name="blue">#00796B</color>
+    <color name="blueLight">#4DB6AC</color>
+
+    <color name="candy_blue100">#5d8ed5</color>
+    <color name="candy_blue90">#5d8fd5</color>
+    <color name="candy_blue15">#e7eef9</color>
+    <color name="candy_blue08">#f2f6fc</color>
 
 </resources>

@@ -1,17 +1,16 @@
 package com.sunilk.tattoo.ui.activity.artistdetail
 
-import com.sunilk.tattoo.network.INetworkService
-import com.sunilk.tattoo.network.api.artist.TattooDetailResponse
-import com.sunilk.tattoo.ui.adapter.ViewModel
-import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.util.Log
+import com.sunilk.tattoo.network.INetworkService
+import com.sunilk.tattoo.network.api.artist.TattooDetailResponse
+import com.sunilk.tattoo.network.api.search.Artist
+import com.sunilk.tattoo.network.api.search.Shop
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
 /**
  * Created by Sunil on 21/10/18.
@@ -34,18 +33,24 @@ class TattooDetailActivityViewModel {
     val showProgress = ObservableBoolean(true)
 
     val artistName = ObservableField<String>("")
-    val genres = ObservableField<String>("")
-    val albumReleaseDate = ObservableField<String>("")
-    val artistImageUrl = ObservableField<String>("")
+    val userName = ObservableField<String>("")
+    val tattooImageUrl = ObservableField<String>("")
+    val profileImageUrl = ObservableField<String>("")
 
-    val showTopTracks = ObservableBoolean(false)
+    val shopName = ObservableField<String>("")
+    val shopAddress = ObservableField<String>("")
 
-    var dataSet = ObservableArrayList<ViewModel>()
+    val noOfPosts = ObservableField<String>("0")
+    val noOfFollowers = ObservableField<String>("0")
+
+    val hashtags = ObservableField<String>("")
 
     private var shouldRetryApiCall = false
 
-    constructor(tattooId: String?, tattooDetailActivityService: ITattooDetailActivityService,
-        networkService: INetworkService) {
+    constructor(
+        tattooId: String?, tattooDetailActivityService: ITattooDetailActivityService,
+        networkService: INetworkService
+    ) {
 
         this.tattooId = tattooId
         this.tattooDetailActivityService = tattooDetailActivityService
@@ -72,7 +77,7 @@ class TattooDetailActivityViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ artistDetailResponse ->
 
-                    handleArtistDetailResponse(artistId, artistDetailResponse)
+                    handleArtistDetailResponse(artistDetailResponse)
 
                 }, { e ->
 
@@ -88,14 +93,52 @@ class TattooDetailActivityViewModel {
         }
     }
 
-    private fun handleArtistDetailResponse(artistId: String, tattooDetailResponse: TattooDetailResponse) {
+    private fun handleArtistDetailResponse(tattooDetailResponse: TattooDetailResponse) {
 
         showProgress.set(false)
 
-        dataSet.clear()
+        tattooDetailResponse.tattooDetail?.apply {
 
-        artistName.set(tattooDetailResponse.tattooDetail?.artist?.name)
-        artistImageUrl.set(tattooDetailResponse.tattooDetail?.image?.url)
+            if (artist != null) {
+                setArtistDetail(artist)
+            }
+
+            tattooImageUrl.set(image?.url)
+
+            if (shop != null) {
+                setShopDetails(shop)
+            }
+
+            val sb = StringBuilder()
+            classification?.hashtags?.forEach { hashtag ->
+                sb.append("#$hashtag ")
+            }
+
+            hashtags.set(sb.toString())
+
+        }
+
+        tattooDetailActivityService.animateTextDetails()
+    }
+
+    private fun setArtistDetail(artist: Artist) {
+
+        artistName.set(artist.name)
+        userName.set("@" + artist.username)
+        profileImageUrl.set(artist.image_url)
+
+
+        noOfPosts.set(artist.counts?.posts ?: "0")
+        noOfFollowers.set(artist.counts?.followers ?: "0")
+    }
+
+
+    private fun setShopDetails(shop: Shop) {
+
+        shopName.set(shop.name ?: "")
+
+        val address = shop.address?.address1 ?: ""+shop.address?.country ?: ""
+        shopAddress.set(address)
     }
 
     private fun handleArtistDetailFailed() {

@@ -8,23 +8,23 @@ import com.google.gson.annotations.SerializedName
 class Counts {
 
     @SerializedName("posts")
-    val posts: Int? = null
+    val posts: String? = null
 
     @SerializedName("mentions")
-    val mentions: Int? = null
+    val mentions: String? = null
 
     @SerializedName("comments")
-    val comments: Int? = null
+    val comments: String? = null
 
     @SerializedName("following")
-    val following: Int? = null
+    val following: String? = null
 
     @SerializedName("followers")
-    val followers: Int? = null
+    val followers: String? = null
 
     @SerializedName("likes")
-    val likes: Int? = null
+    val likes: String? = null
 
     @SerializedName("pins")
-    val pins: Int? = null
+    val pins: String? = null
 }

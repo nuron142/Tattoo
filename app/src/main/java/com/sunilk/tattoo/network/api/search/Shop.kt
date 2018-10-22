@@ -16,6 +16,6 @@ class Shop {
     @SerializedName("username")
     val username: String? = null
 
-    @SerializedName("image_url")
-    val image_url: String? = null
+    @SerializedName("address")
+    val address: ShopAddress? = null
 }

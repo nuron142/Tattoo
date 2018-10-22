@@ -9,4 +9,6 @@ interface ITattooDetailActivityService {
     fun closeArtistDetail()
 
     fun showError()
+
+    fun animateTextDetails()
 }

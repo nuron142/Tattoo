@@ -1,8 +1,9 @@
 package com.sunilk.tattoo.ui.activity.artistdetail
 
-import com.sunilk.tattoo.R
 import android.app.Activity
 import android.support.design.widget.Snackbar
+import android.view.animation.DecelerateInterpolator
+import com.sunilk.tattoo.R
 import com.sunilk.tattoo.databinding.ActivityTattooDetailBinding
 
 /**
@@ -27,7 +28,19 @@ class TattooDetailActivityService : ITattooDetailActivityService {
 
     override fun showError() {
 
-        Snackbar.make(artistDetailBinding.root, activity.getString(R.string.general_error), Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(artistDetailBinding.root, activity.getString(R.string.general_error), Snackbar.LENGTH_SHORT)
+            .show()
+    }
+
+    override fun animateTextDetails() {
+
+        artistDetailBinding.textDetailLayout.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .setInterpolator(DecelerateInterpolator())
+            .setDuration(300)
+            .setStartDelay(200)
+            .start()
     }
 
 }
