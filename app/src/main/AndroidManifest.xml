@@ -28,7 +28,7 @@
         </activity>
 
         <activity
-                android:name=".ui.activity.artistdetail.TattooDetailActivity"
+                android:name=".ui.activity.tattoodetail.TattooDetailActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/NoToolbarAppTheme"/>
 

@@ -1,4 +1,4 @@
-package com.sunilk.tattoo.ui.activity.artistdetail
+package com.sunilk.tattoo.ui.activity.tattoodetail
 
 import android.content.Context
 import android.content.Intent
@@ -48,7 +48,7 @@ class TattooDetailActivity : AppCompatActivity() {
         val tattooId = intent.getStringExtra(TATTOO_ID)
 
         tattooDetailActivityViewModel = TattooDetailActivityViewModel(tattooId,
-            TattooDetailActivityService(this, binding), networkService)
+            TattooDetailActivityNavigator(this, binding), networkService)
 
         binding.vm = tattooDetailActivityViewModel
         binding.executePendingBindings()

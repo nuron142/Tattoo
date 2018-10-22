@@ -1,4 +1,4 @@
-package com.sunilk.tattoo.ui.activity.artistdetail
+package com.sunilk.tattoo.ui.activity.tattoodetail
 
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
@@ -24,7 +24,7 @@ class TattooDetailActivityViewModel {
     }
 
     private var tattooId: String? = null
-    private var tattooDetailActivityService: ITattooDetailActivityService
+    private var tattooDetailActivityNavigator: ITattooDetailActivityNavigator
     private val networkService: INetworkService
 
     private var disposable = CompositeDisposable()
@@ -48,12 +48,12 @@ class TattooDetailActivityViewModel {
     private var shouldRetryApiCall = false
 
     constructor(
-        tattooId: String?, tattooDetailActivityService: ITattooDetailActivityService,
+        tattooId: String?, tattooDetailActivityNavigator: ITattooDetailActivityNavigator,
         networkService: INetworkService
     ) {
 
         this.tattooId = tattooId
-        this.tattooDetailActivityService = tattooDetailActivityService
+        this.tattooDetailActivityNavigator = tattooDetailActivityNavigator
         this.networkService = networkService
 
         setUpViewModel()
@@ -118,7 +118,7 @@ class TattooDetailActivityViewModel {
 
         }
 
-        tattooDetailActivityService.animateTextDetails()
+        tattooDetailActivityNavigator.animateTextDetails()
     }
 
     private fun setArtistDetail(artist: Artist) {
@@ -146,13 +146,13 @@ class TattooDetailActivityViewModel {
         showProgress.set(false)
 
         shouldRetryApiCall = true
-        tattooDetailActivityService.showError()
+        tattooDetailActivityNavigator.showError()
     }
 
 
     fun onCloseButtonClick() = {
 
-        tattooDetailActivityService.closeArtistDetail()
+        tattooDetailActivityNavigator.closeArtistDetail()
     }
 
     fun onDestroy() {

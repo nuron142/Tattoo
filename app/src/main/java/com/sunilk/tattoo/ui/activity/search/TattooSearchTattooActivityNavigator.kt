@@ -1,7 +1,7 @@
 package com.sunilk.tattoo.ui.activity.search
 
 import com.sunilk.tattoo.R
-import com.sunilk.tattoo.ui.activity.artistdetail.TattooDetailActivity
+import com.sunilk.tattoo.ui.activity.tattoodetail.TattooDetailActivity
 import android.app.Activity
 import android.support.design.widget.Snackbar
 import com.sunilk.tattoo.databinding.ActivityTattooSearchBinding

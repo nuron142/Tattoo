@@ -1,4 +1,4 @@
-package com.sunilk.tattoo.ui.activity.artistdetail
+package com.sunilk.tattoo.ui.activity.tattoodetail
 
 import android.app.Activity
 import android.support.design.widget.Snackbar
@@ -10,7 +10,7 @@ import com.sunilk.tattoo.databinding.ActivityTattooDetailBinding
  * Created by Sunil on 21/10/18.
  */
 
-class TattooDetailActivityService : ITattooDetailActivityService {
+class TattooDetailActivityNavigator : ITattooDetailActivityNavigator {
 
     private val activity: Activity
     private val artistDetailBinding: ActivityTattooDetailBinding

@@ -1,10 +1,10 @@
-package com.sunilk.tattoo.ui.activity.artistdetail
+package com.sunilk.tattoo.ui.activity.tattoodetail
 
 /**
  * Created by Sunil on 21/10/18.
  */
 
-interface ITattooDetailActivityService {
+interface ITattooDetailActivityNavigator {
 
     fun closeArtistDetail()
 

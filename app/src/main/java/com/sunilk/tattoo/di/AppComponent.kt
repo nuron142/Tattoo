@@ -1,8 +1,8 @@
 package com.sunilk.tattoo.di
 
 import com.sunilk.tattoo.ui.TattooApplication
-import com.sunilk.tattoo.ui.activity.artistdetail.TattooDetailActivity
-import com.sunilk.tattoo.ui.activity.artistdetail.TattooDetailActivityViewModel
+import com.sunilk.tattoo.ui.activity.tattoodetail.TattooDetailActivity
+import com.sunilk.tattoo.ui.activity.tattoodetail.TattooDetailActivityViewModel
 import com.sunilk.tattoo.ui.activity.search.TattooSearchActivity
 import com.sunilk.tattoo.ui.activity.search.TattooSearchActivityViewModel
 import dagger.BindsInstance

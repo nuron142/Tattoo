@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.sunilk.tattoo.ui.activity.artistdetail.TattooDetailActivityViewModel"/>
+            type="com.sunilk.tattoo.ui.activity.tattoodetail.TattooDetailActivityViewModel"/>
 
     </data>
 
