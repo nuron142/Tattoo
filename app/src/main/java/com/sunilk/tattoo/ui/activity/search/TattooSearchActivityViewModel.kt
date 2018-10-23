@@ -21,6 +21,7 @@ import javax.inject.Inject
 /**
  * Created by Sunil on 20/10/18.
  */
+
 class TattooSearchActivityViewModel
 @Inject
 constructor(val repositoryService: IRepositoryService) {
@@ -47,6 +48,9 @@ constructor(val repositoryService: IRepositoryService) {
     val showNoResultsSubject = PublishProcessor.create<Boolean>()
     val showErrorSubject = PublishProcessor.create<Boolean>()
     val openTattooPageSubject = PublishProcessor.create<String>()
+    val resetScrollCountSubject = PublishProcessor.create<Boolean>()
+
+    private var currentTotalPages = 0
 
     init {
 
@@ -67,19 +71,27 @@ constructor(val repositoryService: IRepositoryService) {
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ query ->
-                getSearchList(query)
+                getSearchList(query, null)
             }, { e -> Log.d(TAG, "" + e.message) })
         )
 
         getRandomTattooList()
     }
 
-    fun getRandomTattooList() {
+    private fun getRandomTattooList() {
 
         searchQuery.set("Dotwork")
     }
 
-    private fun getSearchList(query: String?) {
+
+    fun loadMoreItems(page: Int) {
+
+        if (page <= currentTotalPages) {
+            getSearchList(searchQuery.get(), page)
+        }
+    }
+
+    private fun getSearchList(query: String?, page: Int?) {
 
         searchDisposable?.dispose()
 
@@ -88,12 +100,12 @@ constructor(val repositoryService: IRepositoryService) {
             showProgress.set(true)
             showCloseButton.set(true)
 
-            searchDisposable = repositoryService.getSearchQueryFlowable(query.toLowerCase())
+            searchDisposable = repositoryService.getSearchQuery(query.toLowerCase(), page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ searchResponse ->
 
-                    handleSearchResponse(searchResponse)
+                    handleSearchResponse(searchResponse, page)
 
                 }, { e ->
 
@@ -103,7 +115,7 @@ constructor(val repositoryService: IRepositoryService) {
 
         } else {
 
-            dataSet.clear()
+            clearDataSet()
             showProgress.set(false)
             showCloseButton.set(false)
         }
@@ -117,13 +129,23 @@ constructor(val repositoryService: IRepositoryService) {
         showErrorSubject.offer(true)
     }
 
+    private fun clearDataSet() {
 
-    private fun handleSearchResponse(tattooSearchResponse: TattooSearchResponse?) {
+        dataSet.clear()
+        resetScrollCountSubject.offer(true)
+
+        currentTotalPages = 0
+    }
+
+    private fun handleSearchResponse(tattooSearchResponse: TattooSearchResponse?, page: Int?) {
 
         tattooSearchResponse?.apply {
 
             showProgress.set(false)
-            dataSet.clear()
+
+            if (page == null || page == 0) {
+                clearDataSet()
+            }
 
             tattooList?.forEach { tattooDetail ->
 
@@ -134,6 +156,8 @@ constructor(val repositoryService: IRepositoryService) {
                 dataSet.add(searchArtistViewModel)
             }
 
+            currentTotalPages = meta?.pagination?.total_pages ?: 0
+
             if (dataSet.size == 0) {
                 showNoResultsSubject.offer(true)
             }
@@ -142,7 +166,7 @@ constructor(val repositoryService: IRepositoryService) {
 
     fun onCancelButtonCLick() = {
 
-        dataSet.clear()
+        clearDataSet()
 
         searchQuery.set("")
         showProgress.set(false)

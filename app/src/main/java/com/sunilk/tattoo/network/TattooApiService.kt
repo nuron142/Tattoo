@@ -15,7 +15,8 @@ import retrofit2.http.Query
 interface TattooApiService {
 
     @GET("v2/search/posts")
-    fun getTattooSearch(@Query("q") searchQuery: String): Single<TattooSearchResponse>
+    fun getTattooSearch(@Query("q") searchQuery: String,
+                        @Query("page") page: Int?): Single<TattooSearchResponse>
 
 
     @GET("v2/posts/{tattooID}")

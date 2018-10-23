@@ -70,6 +70,7 @@
                 tools:src="@color/blackGrape0"
                 android:layout_margin="16dp"
                 app:circleCrop="@{true}"
+                android:visibility="@{!vm.profileImageUrl.isEmpty()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 

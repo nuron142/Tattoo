@@ -10,6 +10,7 @@ import com.sunilk.tattoo.R
 import com.sunilk.tattoo.databinding.ActivityTattooSearchBinding
 import com.sunilk.tattoo.ui.activity.tattoodetail.TattooDetailActivity
 import com.sunilk.tattoo.ui.adapter.BindingRecyclerAdapter
+import com.sunilk.tattoo.ui.adapter.EndlessRecyclerOnScrollListener
 import com.sunilk.tattoo.ui.adapter.TattooSearchGridDecoration
 import com.sunilk.tattoo.util.Utilities
 import com.sunilk.tattoo.util.itemanimators.AlphaCrossFadeAnimator
@@ -35,6 +36,8 @@ class TattooSearchActivity : DaggerAppCompatActivity() {
     private lateinit var binding: ActivityTattooSearchBinding
 
     private val allSubscriptions = CompositeDisposable()
+
+    private var endlessRecyclerOnScrollListener: EndlessRecyclerOnScrollListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,11 +80,17 @@ class TattooSearchActivity : DaggerAppCompatActivity() {
         )
 
         binding.recyclerView.addItemDecoration(
-            TattooSearchGridDecoration(
-                resources
-                    .getDimensionPixelSize(R.dimen.itemdecoratoroffset)
-            )
+            TattooSearchGridDecoration(resources.getDimensionPixelSize(R.dimen.itemdecoratoroffset))
         )
+
+        endlessRecyclerOnScrollListener = object : EndlessRecyclerOnScrollListener(gridLayoutManager, 4) {
+            override fun onLoadNextPage(currentPage: Int) {
+                tattooSearchActivityViewModel.loadMoreItems(currentPage + 1)
+            }
+        }
+
+        endlessRecyclerOnScrollListener?.let { listener -> binding.recyclerView.addOnScrollListener(listener) }
+
         binding.recyclerView.itemAnimator = itemAnimator
         binding.recyclerView.adapter = adapter
 
@@ -118,6 +127,16 @@ class TattooSearchActivity : DaggerAppCompatActivity() {
                 .subscribe({
 
                     Snackbar.make(binding.root, getString(R.string.no_results_found), Snackbar.LENGTH_SHORT).show()
+                }, { e -> Log.e(TAG, "Error : " + e.message) })
+        )
+
+        allSubscriptions.add(
+            tattooSearchActivityViewModel.resetScrollCountSubject.hide()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                    endlessRecyclerOnScrollListener?.resetListener()
+
                 }, { e -> Log.e(TAG, "Error : " + e.message) })
         )
     }

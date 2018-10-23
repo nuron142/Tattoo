@@ -4,9 +4,10 @@ import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.util.Log
 import com.sunilk.tattoo.network.IRepositoryService
-import com.sunilk.tattoo.network.api.response.TattooDetailResponse
 import com.sunilk.tattoo.network.api.models.Artist
 import com.sunilk.tattoo.network.api.models.Shop
+import com.sunilk.tattoo.network.api.response.TattooDetailResponse
+import com.sunilk.tattoo.util.isNotEmpty
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -48,6 +49,8 @@ constructor(
 
     val hashtags = ObservableField<String>("")
 
+    val artistNameDetailVisibility = ObservableBoolean(true)
+
     val animateTextDetailsSubject = PublishProcessor.create<Boolean>()
     val showErrorSubject = PublishProcessor.create<Boolean>()
     val closeArtistDetailSubject = PublishProcessor.create<Boolean>()
@@ -70,7 +73,7 @@ constructor(
 
             showProgress.set(true)
 
-            artistDetailDisposable = repositoryService.getTattooDetailFlowable(artistId)
+            artistDetailDisposable = repositoryService.getTattooDetail(artistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ artistDetailResponse ->
@@ -97,6 +100,7 @@ constructor(
 
         tattooDetailResponse.tattooDetail?.apply {
 
+            artistNameDetailVisibility.set(artist != null)
             if (artist != null) {
                 setArtistDetail(artist)
             }
@@ -121,13 +125,13 @@ constructor(
 
     private fun setArtistDetail(artist: Artist) {
 
-        artistName.set(artist.name)
-        userName.set("@" + artist.username)
-        profileImageUrl.set(artist.image_url)
-
+        artist.name?.isNotEmpty { name -> artistName.set(name) }
+        artist.username?.isNotEmpty { username -> userName.set("@$username") }
+        artist.image_url?.isNotEmpty { url -> profileImageUrl.set(url) }
 
         noOfPosts.set(artist.counts?.posts ?: "0")
         noOfFollowers.set(artist.counts?.followers ?: "0")
+
     }
 
 

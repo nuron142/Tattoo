@@ -24,6 +24,13 @@ fun String?.isNotEmpty(): Boolean {
     return this?.length ?: 0 > 0
 }
 
+fun String?.isNotEmpty(block: (String) -> Unit) {
+    if (this != null && this.isNotEmpty()) {
+        block(this)
+    }
+}
+
+
 fun workOnMainThread(block: () -> Unit, onError: (() -> Unit)? = null): Disposable {
 
     return RxUtils.completable(Callable {

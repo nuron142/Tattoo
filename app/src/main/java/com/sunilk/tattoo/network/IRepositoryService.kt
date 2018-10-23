@@ -10,7 +10,7 @@ import io.reactivex.Single
 
 interface IRepositoryService {
 
-    fun getTattooDetailFlowable(tattooID: String): Single<TattooDetailResponse>
+    fun getSearchQuery(query: String, page: Int?): Single<TattooSearchResponse>
 
-    fun getSearchQueryFlowable(query: String): Single<TattooSearchResponse>
+    fun getTattooDetail(tattooID: String): Single<TattooDetailResponse>
 }

@@ -16,6 +16,7 @@ import com.android.databinding.library.baseAdapters.BR
 /**
  * Created by Sunil on 20/10/18.
  */
+
 class BindingRecyclerAdapter : RecyclerView.Adapter<BindingHolder> {
 
     private val dataSet: ObservableArrayList<ViewModel>

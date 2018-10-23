@@ -24,12 +24,12 @@ class RepositoryService : IRepositoryService {
         this.tattooApiService = tattooApiService
     }
 
-    override fun getSearchQueryFlowable(query: String): Single<TattooSearchResponse> {
+    override fun getSearchQuery(query: String, page:Int?): Single<TattooSearchResponse> {
 
-        return tattooApiService.getTattooSearch(query)
+        return tattooApiService.getTattooSearch(query, page)
     }
 
-    override fun getTattooDetailFlowable(tattooID: String): Single<TattooDetailResponse> {
+    override fun getTattooDetail(tattooID: String): Single<TattooDetailResponse> {
 
         return tattooApiService.getTattooDetail(tattooID)
     }
