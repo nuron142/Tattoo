@@ -1,65 +1,54 @@
 package com.sunilk.tattoo.ui.activity.search
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.GridLayoutManager
+import android.util.Log
 import com.sunilk.tattoo.R
 import com.sunilk.tattoo.databinding.ActivityTattooSearchBinding
-import com.sunilk.tattoo.network.INetworkService
-import com.sunilk.tattoo.ui.TattooApplication
+import com.sunilk.tattoo.ui.activity.tattoodetail.TattooDetailActivity
 import com.sunilk.tattoo.ui.adapter.BindingRecyclerAdapter
-import com.sunilk.tattoo.ui.adapter.ItemOffsetDecoration
+import com.sunilk.tattoo.ui.adapter.TattooSearchGridDecoration
 import com.sunilk.tattoo.util.Utilities
 import com.sunilk.tattoo.util.itemanimators.AlphaCrossFadeAnimator
+import dagger.android.support.DaggerAppCompatActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 
 /**
  * Created by Sunil on 20/10/18.
  */
-class TattooSearchActivity : AppCompatActivity() {
+class TattooSearchActivity : DaggerAppCompatActivity() {
 
     companion object {
 
         val TAG: String = TattooSearchActivity::class.java.simpleName
-
-        fun launch(activity: Activity) {
-
-            val intent = Intent(activity, TattooSearchActivity::class.java)
-            activity.startActivity(intent)
-        }
     }
 
     @Inject
-    lateinit var networkService: INetworkService
+    lateinit var tattooSearchActivityViewModel: TattooSearchActivityViewModel
 
     private lateinit var binding: ActivityTattooSearchBinding
 
-    private lateinit var tattooSearchActivityViewModel: TattooSearchActivityViewModel
+    private val allSubscriptions = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tattoo_search)
-        (application as TattooApplication).appComponent.inject(this)
-
-        tattooSearchActivityViewModel = TattooSearchActivityViewModel(
-            TattooSearchTattooActivityNavigator(this, binding),
-            networkService
-        )
 
         binding.vm = tattooSearchActivityViewModel
         binding.executePendingBindings()
 
+        subscribeToViewModel()
+
         setupRecyclerView()
 
         Utilities.showKeyBoard(this, binding.searchEditText)
-
-        tattooSearchActivityViewModel.getRandomTattooList()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -87,8 +76,12 @@ class TattooSearchActivity : AppCompatActivity() {
             tattooSearchActivityViewModel.viewModelLayoutIdMap
         )
 
-        binding.recyclerView.addItemDecoration(ItemOffsetDecoration(resources
-            .getDimensionPixelSize(R.dimen.itemdecoratoroffset)))
+        binding.recyclerView.addItemDecoration(
+            TattooSearchGridDecoration(
+                resources
+                    .getDimensionPixelSize(R.dimen.itemdecoratoroffset)
+            )
+        )
         binding.recyclerView.itemAnimator = itemAnimator
         binding.recyclerView.adapter = adapter
 
@@ -99,8 +92,41 @@ class TattooSearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun subscribeToViewModel() {
+
+        allSubscriptions.add(
+            tattooSearchActivityViewModel.openTattooPageSubject.hide()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ tattooId ->
+
+                    TattooDetailActivity.launch(this@TattooSearchActivity, tattooId)
+                }, { e -> Log.e(TAG, "Error : " + e.message) })
+        )
+
+        allSubscriptions.add(
+            tattooSearchActivityViewModel.showErrorSubject.hide()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                    Snackbar.make(binding.root, getString(R.string.general_error), Snackbar.LENGTH_SHORT).show()
+                }, { e -> Log.e(TAG, "Error : " + e.message) })
+        )
+
+        allSubscriptions.add(
+            tattooSearchActivityViewModel.showNoResultsSubject.hide()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                    Snackbar.make(binding.root, getString(R.string.no_results_found), Snackbar.LENGTH_SHORT).show()
+                }, { e -> Log.e(TAG, "Error : " + e.message) })
+        )
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+
+        allSubscriptions.dispose()
         tattooSearchActivityViewModel.onDestroy()
+
     }
 }

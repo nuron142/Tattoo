@@ -1,20 +1,26 @@
 package com.sunilk.tattoo.ui
 
+import android.app.Activity
 import android.app.Application
 import android.util.Log
-import com.sunilk.tattoo.di.AppComponent
 import com.sunilk.tattoo.di.DaggerAppComponent
-import com.sunilk.tattoo.ui.activity.search.TattooSearchActivityViewModel
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
 import io.reactivex.plugins.RxJavaPlugins
+import javax.inject.Inject
 
 
 /**
  * Created by Sunil on 20/10/18.
  */
-class TattooApplication : Application() {
+class TattooApplication : Application(), HasActivityInjector {
 
     val TAG: String = TattooApplication::class.java.simpleName
-    lateinit var appComponent: AppComponent
+
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Activity>
+
+    override fun activityInjector(): DispatchingAndroidInjector<Activity> = androidInjector
 
     override fun onCreate() {
         super.onCreate()
@@ -25,11 +31,10 @@ class TattooApplication : Application() {
 
     private fun setUpDaggerModule() {
 
-        appComponent = DaggerAppComponent
+        DaggerAppComponent
             .builder()
             .application(this)
             .build()
-
-        appComponent.inject(this)
+            .inject(this)
     }
 }

@@ -1,17 +1,17 @@
 package com.sunilk.tattoo.network
 
-import com.sunilk.tattoo.network.api.artist.TattooDetailResponse
-import com.sunilk.tattoo.network.api.search.TattooSearchResponse
+import com.sunilk.tattoo.network.api.response.TattooDetailResponse
+import com.sunilk.tattoo.network.api.response.TattooSearchResponse
 import io.reactivex.Single
 
 /**
  * Created by Sunil on 20/10/18.
  */
-class NetworkService : INetworkService {
+class RepositoryService : IRepositoryService {
 
     companion object {
 
-        val TAG = NetworkService::class.java.simpleName
+        val TAG = RepositoryService::class.java.simpleName
 
         const val BASE_URL = "https://backend-api.tattoodo.com/api/"
         var cacheSize = 1 * 1024 * 1024L // 1 MB

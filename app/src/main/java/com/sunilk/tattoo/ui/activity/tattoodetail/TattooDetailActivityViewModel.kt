@@ -3,29 +3,32 @@ package com.sunilk.tattoo.ui.activity.tattoodetail
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.util.Log
-import com.sunilk.tattoo.network.INetworkService
-import com.sunilk.tattoo.network.api.artist.TattooDetailResponse
-import com.sunilk.tattoo.network.api.search.Artist
-import com.sunilk.tattoo.network.api.search.Shop
+import com.sunilk.tattoo.network.IRepositoryService
+import com.sunilk.tattoo.network.api.response.TattooDetailResponse
+import com.sunilk.tattoo.network.api.models.Artist
+import com.sunilk.tattoo.network.api.models.Shop
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 /**
  * Created by Sunil on 21/10/18.
  */
 
-class TattooDetailActivityViewModel {
+class TattooDetailActivityViewModel
+@Inject
+constructor(
+    private val tattooId: String?,
+    private val repositoryService: IRepositoryService
+) {
 
     companion object {
 
         val TAG: String = TattooDetailActivityViewModel::class.java.simpleName
     }
-
-    private var tattooId: String? = null
-    private var tattooDetailActivityNavigator: ITattooDetailActivityNavigator
-    private val networkService: INetworkService
 
     private var disposable = CompositeDisposable()
     private var artistDetailDisposable: Disposable? = null
@@ -45,16 +48,11 @@ class TattooDetailActivityViewModel {
 
     val hashtags = ObservableField<String>("")
 
-    private var shouldRetryApiCall = false
+    val animateTextDetailsSubject = PublishProcessor.create<Boolean>()
+    val showErrorSubject = PublishProcessor.create<Boolean>()
+    val closeArtistDetailSubject = PublishProcessor.create<Boolean>()
 
-    constructor(
-        tattooId: String?, tattooDetailActivityNavigator: ITattooDetailActivityNavigator,
-        networkService: INetworkService
-    ) {
-
-        this.tattooId = tattooId
-        this.tattooDetailActivityNavigator = tattooDetailActivityNavigator
-        this.networkService = networkService
+    init {
 
         setUpViewModel()
     }
@@ -72,7 +70,7 @@ class TattooDetailActivityViewModel {
 
             showProgress.set(true)
 
-            artistDetailDisposable = networkService.getTattooDetailFlowable(artistId)
+            artistDetailDisposable = repositoryService.getTattooDetailFlowable(artistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ artistDetailResponse ->
@@ -118,7 +116,7 @@ class TattooDetailActivityViewModel {
 
         }
 
-        tattooDetailActivityNavigator.animateTextDetails()
+        animateTextDetailsSubject.offer(true)
     }
 
     private fun setArtistDetail(artist: Artist) {
@@ -144,15 +142,15 @@ class TattooDetailActivityViewModel {
     private fun handleArtistDetailFailed() {
 
         showProgress.set(false)
-
-        shouldRetryApiCall = true
-        tattooDetailActivityNavigator.showError()
+        showErrorSubject.offer(true)
     }
 
+    fun onCloseButtonClick(): () -> Unit {
 
-    fun onCloseButtonClick() = {
+        return {
 
-        tattooDetailActivityNavigator.closeArtistDetail()
+            closeArtistDetailSubject.offer(true)
+        }
     }
 
     fun onDestroy() {

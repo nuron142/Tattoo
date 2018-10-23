@@ -1,4 +1,4 @@
-package com.sunilk.tattoo.network.api.search
+package com.sunilk.tattoo.network.api.models
 
 import com.google.gson.annotations.SerializedName
 

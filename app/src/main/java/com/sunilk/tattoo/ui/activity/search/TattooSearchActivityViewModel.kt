@@ -5,28 +5,30 @@ import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.util.Log
 import com.sunilk.tattoo.R
-import com.sunilk.tattoo.network.INetworkService
-import com.sunilk.tattoo.network.api.search.TattooSearchResponse
+import com.sunilk.tattoo.network.IRepositoryService
+import com.sunilk.tattoo.network.api.response.TattooSearchResponse
 import com.sunilk.tattoo.ui.activity.search.viewmodels.SearchTattooViewModel
 import com.sunilk.tattoo.ui.adapter.ViewModel
 import com.sunilk.tattoo.util.toFlowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  * Created by Sunil on 20/10/18.
  */
-class TattooSearchActivityViewModel {
+class TattooSearchActivityViewModel
+@Inject
+constructor(val repositoryService: IRepositoryService) {
 
     companion object {
 
         val TAG: String = TattooSearchActivityViewModel::class.java.simpleName
     }
-
-    val networkService: INetworkService
 
     var dataSet = ObservableArrayList<ViewModel>()
 
@@ -38,17 +40,15 @@ class TattooSearchActivityViewModel {
     private var searchDisposable: Disposable? = null
 
     val showCloseButton = ObservableBoolean(false)
-    private val tattooSearchActivityNavigator: ITattooSearchActivityNavigator
 
     val showProgress = ObservableBoolean(false)
     var searchQuery = ObservableField<String>("")
 
-    private var shouldRetryApiCall = false
+    val showNoResultsSubject = PublishProcessor.create<Boolean>()
+    val showErrorSubject = PublishProcessor.create<Boolean>()
+    val openTattooPageSubject = PublishProcessor.create<String>()
 
-    constructor(tattooSearchActivityNavigator: ITattooSearchActivityNavigator, networkService: INetworkService) {
-
-        this.tattooSearchActivityNavigator = tattooSearchActivityNavigator
-        this.networkService = networkService
+    init {
 
         setUpViewModel()
     }
@@ -71,12 +71,12 @@ class TattooSearchActivityViewModel {
             }, { e -> Log.d(TAG, "" + e.message) })
         )
 
-
-        searchQuery.set("Dotwork")
+        getRandomTattooList()
     }
 
     fun getRandomTattooList() {
 
+        searchQuery.set("Dotwork")
     }
 
     private fun getSearchList(query: String?) {
@@ -88,7 +88,7 @@ class TattooSearchActivityViewModel {
             showProgress.set(true)
             showCloseButton.set(true)
 
-            searchDisposable = networkService.getSearchQueryFlowable(query.toLowerCase())
+            searchDisposable = repositoryService.getSearchQueryFlowable(query.toLowerCase())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ searchResponse ->
@@ -114,9 +114,7 @@ class TattooSearchActivityViewModel {
         dataSet.clear()
 
         showProgress.set(false)
-        tattooSearchActivityNavigator.showError()
-
-        shouldRetryApiCall = true
+        showErrorSubject.offer(true)
     }
 
 
@@ -130,13 +128,14 @@ class TattooSearchActivityViewModel {
             tattooList?.forEach { tattooDetail ->
 
                 val searchArtistViewModel = SearchTattooViewModel(tattooDetail) { tattooId ->
-                    tattooSearchActivityNavigator.openTattooDetailPage(tattooId)
+                    openTattooPageSubject.offer(tattooId)
                 }
+
                 dataSet.add(searchArtistViewModel)
             }
 
             if (dataSet.size == 0) {
-                tattooSearchActivityNavigator.showNoResultsFound()
+                showNoResultsSubject.offer(true)
             }
         }
     }

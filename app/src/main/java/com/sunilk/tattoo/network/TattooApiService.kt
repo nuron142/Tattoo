@@ -1,7 +1,7 @@
 package com.sunilk.tattoo.network
 
-import com.sunilk.tattoo.network.api.artist.TattooDetailResponse
-import com.sunilk.tattoo.network.api.search.TattooSearchResponse
+import com.sunilk.tattoo.network.api.response.TattooDetailResponse
+import com.sunilk.tattoo.network.api.response.TattooSearchResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path

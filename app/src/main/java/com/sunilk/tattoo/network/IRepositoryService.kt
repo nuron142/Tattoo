@@ -1,15 +1,14 @@
 package com.sunilk.tattoo.network
 
-import com.sunilk.tattoo.network.api.artist.TattooDetailResponse
-import com.sunilk.tattoo.network.api.search.TattooSearchResponse
-import io.reactivex.Flowable
+import com.sunilk.tattoo.network.api.response.TattooDetailResponse
+import com.sunilk.tattoo.network.api.response.TattooSearchResponse
 import io.reactivex.Single
 
 /**
  * Created by Sunil on 20/10/18.
  */
 
-interface INetworkService {
+interface IRepositoryService {
 
     fun getTattooDetailFlowable(tattooID: String): Single<TattooDetailResponse>
 

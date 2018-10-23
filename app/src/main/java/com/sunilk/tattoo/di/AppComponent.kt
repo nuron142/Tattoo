@@ -1,14 +1,11 @@
 package com.sunilk.tattoo.di
 
 import com.sunilk.tattoo.ui.TattooApplication
-import com.sunilk.tattoo.ui.activity.tattoodetail.TattooDetailActivity
-import com.sunilk.tattoo.ui.activity.tattoodetail.TattooDetailActivityViewModel
-import com.sunilk.tattoo.ui.activity.search.TattooSearchActivity
-import com.sunilk.tattoo.ui.activity.search.TattooSearchActivityViewModel
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
-
 
 /**
  * Created by Sunil on 20/10/18.
@@ -16,9 +13,14 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [AppModule::class]
+    modules = [
+        AndroidSupportInjectionModule::class,
+        AppModule::class,
+        NetworkModule::class,
+        ActivityBindingModule::class
+    ]
 )
-interface AppComponent {
+interface AppComponent : AndroidInjector<TattooApplication> {
 
     @Component.Builder
     interface Builder {
@@ -28,15 +30,5 @@ interface AppComponent {
 
         fun build(): AppComponent
     }
-
-    fun inject(tattooApplication: TattooApplication)
-
-    fun inject(tattooSearchActivity: TattooSearchActivity)
-
-    fun inject(tattooDetailActivity: TattooDetailActivity)
-
-    fun inject(tattooSearchActivityViewModel: TattooSearchActivityViewModel)
-
-    fun inject(tattooDetailActivityViewModel: TattooDetailActivityViewModel)
 
 }

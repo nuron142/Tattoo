@@ -8,7 +8,7 @@ import android.view.View
  * Created by Sunil on 22/10/18.
  */
 
-class ItemOffsetDecoration : RecyclerView.ItemDecoration {
+class TattooSearchGridDecoration : RecyclerView.ItemDecoration {
 
     private val offset: Int
 

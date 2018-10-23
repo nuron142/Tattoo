@@ -1,7 +1,6 @@
 package com.sunilk.tattoo.util
 
 import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Handler
 import android.os.SystemClock
 import android.view.MotionEvent
@@ -35,12 +34,5 @@ object Utilities {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
-    }
-
-    fun isNetworkAvailable(context: Context): Boolean {
-
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val mActiveNetworkInfo = connectivityManager.activeNetworkInfo
-        return mActiveNetworkInfo != null && mActiveNetworkInfo.isConnected
     }
 }
