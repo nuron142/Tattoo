@@ -15,6 +15,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ import javax.inject.Inject
  * Created by Sunil on 20/10/18.
  */
 
-class TattooSearchActivityViewModel
+open class TattooSearchActivityViewModel
 @Inject
 constructor(val repositoryService: IRepositoryService) {
 
@@ -37,10 +38,12 @@ constructor(val repositoryService: IRepositoryService) {
         SearchTattooViewModel::class.java to R.layout.item_search_tattoo_layout
     )
 
+    private val searchKeywords = listOf("Geometric", "Space", "Minimal", "Nature", "Ocean")
+
     private var disposable = CompositeDisposable()
     private var searchDisposable: Disposable? = null
 
-    val showCloseButton = ObservableBoolean(false)
+    val showClearButton = ObservableBoolean(false)
 
     val showProgress = ObservableBoolean(false)
     var searchQuery = ObservableField<String>("")
@@ -52,18 +55,13 @@ constructor(val repositoryService: IRepositoryService) {
 
     private var currentTotalPages = 0
 
-    init {
-
-        setUpViewModel()
-    }
-
-    private fun setUpViewModel() {
+    fun setUpViewModel() {
 
         disposable.add(searchQuery.toFlowable()
             .map { query ->
 
                 showProgress.set(query.isNotEmpty())
-                showCloseButton.set(query.isNotEmpty())
+                showClearButton.set(query.isNotEmpty())
 
                 return@map query
             }
@@ -80,7 +78,7 @@ constructor(val repositoryService: IRepositoryService) {
 
     private fun getRandomTattooList() {
 
-        searchQuery.set("Dotwork")
+        searchQuery.set(searchKeywords.get(Random().nextInt(searchKeywords.size)))
     }
 
 
@@ -98,7 +96,7 @@ constructor(val repositoryService: IRepositoryService) {
         if (query != null && !query.isEmpty()) {
 
             showProgress.set(true)
-            showCloseButton.set(true)
+            showClearButton.set(true)
 
             searchDisposable = repositoryService.getSearchQuery(query.toLowerCase(), page)
                 .subscribeOn(Schedulers.io())
@@ -117,7 +115,7 @@ constructor(val repositoryService: IRepositoryService) {
 
             clearDataSet()
             showProgress.set(false)
-            showCloseButton.set(false)
+            showClearButton.set(false)
         }
     }
 
@@ -137,17 +135,17 @@ constructor(val repositoryService: IRepositoryService) {
         currentTotalPages = 0
     }
 
-    private fun handleSearchResponse(tattooSearchResponse: TattooSearchResponse?, page: Int?) {
+    internal fun handleSearchResponse(tattooSearchResponse: TattooSearchResponse?, page: Int?) {
 
-        tattooSearchResponse?.apply {
+        showProgress.set(false)
 
-            showProgress.set(false)
+        if (tattooSearchResponse != null) {
 
             if (page == null || page == 0) {
                 clearDataSet()
             }
 
-            tattooList?.forEach { tattooDetail ->
+            tattooSearchResponse.tattooList?.forEach { tattooDetail ->
 
                 val searchArtistViewModel = SearchTattooViewModel(tattooDetail) { tattooId ->
                     openTattooPageSubject.offer(tattooId)
@@ -156,21 +154,31 @@ constructor(val repositoryService: IRepositoryService) {
                 dataSet.add(searchArtistViewModel)
             }
 
-            currentTotalPages = meta?.pagination?.total_pages ?: 0
+            currentTotalPages = tattooSearchResponse.meta?.pagination?.total_pages ?: 0
 
             if (dataSet.size == 0) {
-                showNoResultsSubject.offer(true)
+                showNoResultsError()
             }
+
+        } else {
+
+            showNoResultsError()
         }
     }
 
-    fun onCancelButtonCLick() = {
+    private fun showNoResultsError() {
+
+        clearDataSet()
+        showNoResultsSubject.offer(true)
+    }
+
+    fun onClearButtonCLick() = {
 
         clearDataSet()
 
         searchQuery.set("")
         showProgress.set(false)
-        showCloseButton.set(false)
+        showClearButton.set(false)
     }
 
     fun onDestroy() {

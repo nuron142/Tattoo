@@ -19,7 +19,7 @@ import javax.inject.Inject
  * Created by Sunil on 21/10/18.
  */
 
-class TattooDetailActivityViewModel
+open class TattooDetailActivityViewModel
 @Inject
 constructor(
     private val tattooId: String?,
@@ -55,12 +55,8 @@ constructor(
     val showErrorSubject = PublishProcessor.create<Boolean>()
     val closeArtistDetailSubject = PublishProcessor.create<Boolean>()
 
-    init {
 
-        setUpViewModel()
-    }
-
-    private fun setUpViewModel() {
+    fun setUpViewModel() {
 
         getTattooDetail(tattooId)
     }
@@ -90,37 +86,44 @@ constructor(
 
         } else {
 
-            showProgress.set(false)
+            handleArtistDetailFailed()
         }
     }
 
-    private fun handleArtistDetailResponse(tattooDetailResponse: TattooDetailResponse) {
+    internal fun handleArtistDetailResponse(tattooDetailResponse: TattooDetailResponse?) {
 
         showProgress.set(false)
 
-        tattooDetailResponse.tattooDetail?.apply {
+        if (tattooDetailResponse?.tattooDetail != null) {
 
-            artistNameDetailVisibility.set(artist != null)
-            if (artist != null) {
-                setArtistDetail(artist)
+            tattooDetailResponse.tattooDetail.apply {
+
+                artistNameDetailVisibility.set(artist != null)
+                if (artist != null) {
+                    setArtistDetail(artist)
+                }
+
+                tattooImageUrl.set(image?.url)
+
+                if (shop != null) {
+                    setShopDetails(shop)
+                }
+
+                val sb = StringBuilder()
+                classification?.hashtags?.forEach { hashtag ->
+                    sb.append("#$hashtag ")
+                }
+
+                hashtags.set(sb.toString())
+
             }
 
-            tattooImageUrl.set(image?.url)
+            animateTextDetailsSubject.offer(true)
 
-            if (shop != null) {
-                setShopDetails(shop)
-            }
+        } else {
 
-            val sb = StringBuilder()
-            classification?.hashtags?.forEach { hashtag ->
-                sb.append("#$hashtag ")
-            }
-
-            hashtags.set(sb.toString())
-
+            handleArtistDetailFailed()
         }
-
-        animateTextDetailsSubject.offer(true)
     }
 
     private fun setArtistDetail(artist: Artist) {
@@ -131,7 +134,6 @@ constructor(
 
         noOfPosts.set(artist.counts?.posts ?: "0")
         noOfFollowers.set(artist.counts?.followers ?: "0")
-
     }
 
 

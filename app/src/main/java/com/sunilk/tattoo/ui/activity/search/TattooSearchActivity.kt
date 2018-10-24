@@ -50,8 +50,9 @@ class TattooSearchActivity : DaggerAppCompatActivity() {
         subscribeToViewModel()
 
         setupRecyclerView()
-
         Utilities.showKeyBoard(this, binding.searchEditText)
+
+        tattooSearchActivityViewModel.setUpViewModel()
     }
 
     @SuppressLint("ClickableViewAccessibility")

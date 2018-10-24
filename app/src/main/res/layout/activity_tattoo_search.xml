@@ -88,8 +88,8 @@
                 android:background="@color/white"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:onClick="@{vm.onCancelButtonCLick()}"
-                android:visibility="@{vm.showCloseButton, default=visible}"
+                android:onClick="@{vm.onClearButtonCLick()}"
+                android:visibility="@{vm.showClearButton, default=visible}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">

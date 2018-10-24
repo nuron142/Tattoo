@@ -52,6 +52,8 @@ class TattooDetailActivity : DaggerAppCompatActivity() {
 
         subscribeToViewModel()
 
+        tattooDetailActivityViewModel.setUpViewModel()
+
     }
 
     private fun subscribeToViewModel() {
