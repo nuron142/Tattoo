@@ -30,14 +30,14 @@ abstract class EndlessRecyclerOnScrollListener : RecyclerView.OnScrollListener {
 
     private var pageNumber = 0
 
-    private var mLinearLayoutManager: LinearLayoutManager? = null
+    private var linearLayoutManager: LinearLayoutManager? = null
 
     constructor(linearLayoutManager: LinearLayoutManager) {
-        this.mLinearLayoutManager = linearLayoutManager
+        this.linearLayoutManager = linearLayoutManager
     }
 
     constructor(linearLayoutManager: LinearLayoutManager, visibleThreshold: Int) {
-        this.mLinearLayoutManager = linearLayoutManager
+        this.linearLayoutManager = linearLayoutManager
         this.visibleThreshold = visibleThreshold
     }
 
@@ -45,8 +45,8 @@ abstract class EndlessRecyclerOnScrollListener : RecyclerView.OnScrollListener {
         super.onScrolled(recyclerView, dx, dy)
 
         visibleItemCount = recyclerView.childCount
-        totalItemCount = mLinearLayoutManager!!.itemCount
-        firstVisibleItem = mLinearLayoutManager!!.findFirstVisibleItemPosition()
+        totalItemCount = linearLayoutManager!!.itemCount
+        firstVisibleItem = linearLayoutManager!!.findFirstVisibleItemPosition()
 
         if (isLoading) {
             if (totalItemCount > previousTotal) {
@@ -54,13 +54,12 @@ abstract class EndlessRecyclerOnScrollListener : RecyclerView.OnScrollListener {
                 previousTotal = totalItemCount
             }
         }
+
         if (!isLoading && totalItemCount - visibleItemCount <= firstVisibleItem + visibleThreshold) {
 
             pageNumber++
-
-            onLoadNextPage(pageNumber)
-
             isLoading = true
+            onLoadNextPage(pageNumber)
         }
     }
 

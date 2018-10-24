@@ -7,7 +7,7 @@ import android.util.Log
 import com.sunilk.tattoo.R
 import com.sunilk.tattoo.network.IRepositoryService
 import com.sunilk.tattoo.network.api.response.TattooSearchResponse
-import com.sunilk.tattoo.ui.activity.search.viewmodels.SearchTattooViewModel
+import com.sunilk.tattoo.ui.activity.search.viewmodels.TattooSearchItemViewModel
 import com.sunilk.tattoo.ui.adapter.ViewModel
 import com.sunilk.tattoo.util.toFlowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,7 +35,7 @@ constructor(val repositoryService: IRepositoryService) {
     var dataSet = ObservableArrayList<ViewModel>()
 
     val viewModelLayoutIdMap: HashMap<Class<out ViewModel>, Int> = hashMapOf(
-        SearchTattooViewModel::class.java to R.layout.item_search_tattoo_layout
+        TattooSearchItemViewModel::class.java to R.layout.item_search_tattoo_layout
     )
 
     private val searchKeywords = listOf("Geometric", "Space", "Minimal", "Nature", "Ocean")
@@ -76,6 +76,7 @@ constructor(val repositoryService: IRepositoryService) {
         getRandomTattooList()
     }
 
+    //Loading a random tattoo list at startup
     private fun getRandomTattooList() {
 
         searchQuery.set(searchKeywords.get(Random().nextInt(searchKeywords.size)))
@@ -147,7 +148,7 @@ constructor(val repositoryService: IRepositoryService) {
 
             tattooSearchResponse.tattooList?.forEach { tattooDetail ->
 
-                val searchArtistViewModel = SearchTattooViewModel(tattooDetail) { tattooId ->
+                val searchArtistViewModel = TattooSearchItemViewModel(tattooDetail) { tattooId ->
                     openTattooPageSubject.offer(tattooId)
                 }
 

@@ -44,7 +44,7 @@ object Utilities {
 
         try {
 
-            val inputStream = javaClass.classLoader.getResourceAsStream(fileName)
+            val inputStream = javaClass.classLoader?.getResourceAsStream(fileName)
 
             if (inputStream != null) {
 

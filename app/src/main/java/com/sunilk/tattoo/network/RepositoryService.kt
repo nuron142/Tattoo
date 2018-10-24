@@ -7,7 +7,13 @@ import io.reactivex.Single
 /**
  * Created by Sunil on 20/10/18.
  */
-class RepositoryService : IRepositoryService {
+
+/**
+ * Repository exposes methods to get search results
+ * Currently it only uses network but database search can also added here
+ */
+
+class RepositoryService(private val tattooApiService: TattooApiService) : IRepositoryService {
 
     companion object {
 
@@ -17,14 +23,7 @@ class RepositoryService : IRepositoryService {
         var cacheSize = 1 * 1024 * 1024L // 1 MB
     }
 
-    private val tattooApiService: TattooApiService
-
-    constructor(tattooApiService: TattooApiService) {
-
-        this.tattooApiService = tattooApiService
-    }
-
-    override fun getSearchQuery(query: String, page:Int?): Single<TattooSearchResponse> {
+    override fun getSearchQuery(query: String, page: Int?): Single<TattooSearchResponse> {
 
         return tattooApiService.getTattooSearch(query, page)
     }

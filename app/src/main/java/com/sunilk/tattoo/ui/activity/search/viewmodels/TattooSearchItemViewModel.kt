@@ -7,7 +7,8 @@ import android.databinding.ObservableField
 /**
  * Created by Sunil on 20/10/18.
  */
-class SearchTattooViewModel : ViewModel {
+
+class TattooSearchItemViewModel : ViewModel {
 
     val albumImageUrl = ObservableField<String>("")
 

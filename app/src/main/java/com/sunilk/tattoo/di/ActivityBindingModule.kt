@@ -10,6 +10,10 @@ import dagger.android.ContributesAndroidInjector
  * Created by Sunil on 20/10/18.
  */
 
+/**
+ * Module where Activity dependencies are defined
+ */
+
 @Module
 abstract class ActivityBindingModule {
 

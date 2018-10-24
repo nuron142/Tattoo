@@ -4,7 +4,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.sunilk.tattoo.network.IRepositoryService
 import com.sunilk.tattoo.network.api.response.TattooSearchResponse
 import com.sunilk.tattoo.ui.activity.search.TattooSearchActivityViewModel
-import com.sunilk.tattoo.ui.activity.search.viewmodels.SearchTattooViewModel
+import com.sunilk.tattoo.ui.activity.search.viewmodels.TattooSearchItemViewModel
 import com.sunilk.tattoo.util.Utilities
 import io.reactivex.subscribers.TestSubscriber
 import org.junit.Assert.assertEquals
@@ -85,7 +85,7 @@ class TattooSearchViewModelTest {
         viewModel.handleSearchResponse(tattooSearchResponse, null)
         assertEquals(viewModel.dataSet.size, 2)
 
-        (viewModel.dataSet[0] as SearchTattooViewModel).onClick().invoke()
+        (viewModel.dataSet[0] as TattooSearchItemViewModel).onClick().invoke()
         testSubscriber.assertValue("737290")
     }
 }
